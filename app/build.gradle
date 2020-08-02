@@ -22,6 +22,11 @@ android {
 
             buildConfigField "String", "SERVER_URL", '"https://app-api.mcallapp.com/api/"'
         }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            buildConfigField "String", "SERVER_URL", '"https://app-api.mcallapp.com/api/"'}
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

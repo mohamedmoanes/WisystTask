@@ -17,26 +17,6 @@ open class BaseViewModel : ViewModel(), CoroutineScope {
 
     val showLoading = MutableLiveData<Boolean>()
 
-//    suspend fun <T> callApi(
-//        resultLiveData: MutableLiveData<ModelResponse<T>>,
-//        request: UseCaseResult<BaseResponse<T>>?
-//    ) {
-//
-//            resultLiveData.value =
-//                ModelResponse(Status.LOADING)
-//            val result = withContext(Dispatchers.IO) {
-//                request
-//            }
-//
-//            when (result) {
-//                is UseCaseResult.Success -> resultLiveData.value =
-//                    ModelResponse(Status.SUCCESS, data = result.data.data)
-//                is UseCaseResult.Error -> resultLiveData.value =
-//                    ModelResponse(Status.FAILED, message = result.message)
-//            }
-//
-//    }
-
     override fun onCleared() {
         super.onCleared()
         // Clear our job when the linked activity is destroyed to avoid memory leaks

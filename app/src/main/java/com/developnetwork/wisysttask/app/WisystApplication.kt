@@ -3,6 +3,7 @@ package com.developnetwork.wisysttask.app
 import android.app.Application
 import com.developnetwork.wisysttask.modules.appModules
 import com.developnetwork.wisysttask.modules.repoModule
+import com.developnetwork.wisysttask.modules.viewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -20,7 +21,7 @@ class WisystApplication : Application() {
 //        sharedPreferencesManager = SharedPreferencesManager()
         startKoin {
             androidContext(this@WisystApplication)
-            modules(listOf(appModules, repoModule))
+            modules(listOf(appModules, repoModule, viewModelModule))
         }
 //        Timber.plant(if (BuildConfig.DEBUG) Timber.DebugTree() else ExceptionReportingTree())
     }

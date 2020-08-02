@@ -4,17 +4,17 @@ import androidx.lifecycle.MutableLiveData
 import com.developnetwork.wisysttask.data.model.providers.DataItem
 import com.developnetwork.wisysttask.data.repositories.ProviderRepo
 import com.developnetwork.wisysttask.ui.base.BaseViewModel
-import com.developnetwork.wisysttask.ui.base.Status
-import com.developnetwork.wisysttask.ui.base.UseCaseResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class HomeViewModel(private val providerRepo: ProviderRepo): BaseViewModel(){
-    val providersLiveData = MutableLiveData<ArrayList<DataItem>>()
+    val providersLiveData = MutableLiveData<MutableList<DataItem>>()
     private var mCurrentPage = 1
     private var mTotalPage = 1
-
+init {
+    providersLiveData.value=ArrayList()
+}
     fun getProviders() {
         launch {
             try {
@@ -24,6 +24,7 @@ class HomeViewModel(private val providerRepo: ProviderRepo): BaseViewModel(){
                 }
 
                 result.data?.let { providersLiveData.value?.addAll(it) }
+                providersLiveData.value=providersLiveData.value
                 mCurrentPage = result.currentPage
                 mTotalPage = result.totalPages
                 showLoading.value=false

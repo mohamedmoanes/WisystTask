@@ -3,13 +3,16 @@ package com.developnetwork.wisysttask.data.network
 import com.developnetwork.wisysttask.data.model.providers.ProvidersResponse
 import com.developnetwork.wisysttask.data.model.specifications.SpecificationsResponse
 import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
 
 interface Service {
     @POST("specifications")
+    @FormUrlEncoded
     suspend fun getSpecifications(): SpecificationsResponse
 
     @POST("user/search")
+    @FormUrlEncoded
     suspend fun getProviders(
         @Field("page") page: Int? = 1,
         @Field("queryStr") queryStr: String? = null,

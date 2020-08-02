@@ -1,5 +1,6 @@
 package com.developnetwork.wisysttask.modules
 
+
 import com.developnetwork.wisysttask.BuildConfig
 import com.developnetwork.wisysttask.data.network.Service
 import okhttp3.*
@@ -13,10 +14,10 @@ import java.util.concurrent.TimeUnit
 val appModules = module {
     // The Retrofit service using our custom HTTP client instance as a singleton
     single {
-//        createWebService<Service>(
-//            okHttpClient = createHttpClient(),
-//            baseUrl = BuildConfig.SERVER_URL
-//        )
+        createWebService<Service>(
+            okHttpClient = createHttpClient(),
+            baseUrl = BuildConfig.SERVER_URL
+        )
     }
 
 }
