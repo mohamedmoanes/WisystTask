@@ -44,8 +44,6 @@ data class DataItem(@SerializedName("is_branch")
                     val address: String = "",
                     @SerializedName("is_lottery")
                     val isLottery: Int = 0,
-                    @SerializedName("type_id")
-                    val typeId: Null = null,
                     @SerializedName("mobile")
                     val mobile: String = "",
                     @SerializedName("favourite")

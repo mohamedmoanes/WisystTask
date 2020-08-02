@@ -3,4 +3,11 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+
+    <color name="white">#ffffff</color>
+    <color name="green">#0CC25C</color>
+    <color name="gold">#FFD700</color>
+    <color name="TRANSPARENT">#00DFEFF5</color>
+    <color name="black">#000000</color>
+    <color name="darkTRANSPARENT">#48000000</color>
 </resources>
