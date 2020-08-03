@@ -1,10 +1,11 @@
 package com.moanes.wisysttask.data.repositories
 
 import com.moanes.wisysttask.data.model.providers.Providers
+import com.moanes.wisysttask.data.model.providers.ProvidersResponse
 import com.moanes.wisysttask.data.network.Service
 
 interface ProviderRepo {
-    suspend fun getProviders(page: Int): Providers
+    suspend fun getProviders(page: Int): ProvidersResponse
     suspend fun filterProviders(
         page: Int,
         key: String?,
@@ -12,12 +13,12 @@ interface ProviderRepo {
         offers: Int? = 0,
         homeServices: Int? = 0,
         specificationID: Int? = 0
-    ): Providers
+    ): ProvidersResponse
 }
 
 class ProviderRepoImpl(private val service: Service) : ProviderRepo {
-    override suspend fun getProviders(page: Int): Providers {
-        return service.getProviders(page = page).providers
+    override suspend fun getProviders(page: Int): ProvidersResponse {
+        return service.getProviders(page = page)
     }
 
     override suspend fun filterProviders(
@@ -27,7 +28,7 @@ class ProviderRepoImpl(private val service: Service) : ProviderRepo {
         offers: Int?,
         homeServices: Int?,
         specificationID: Int?
-    ): Providers {
+    ): ProvidersResponse {
         return service.getProviders(
             page = page,
             queryStr = key,
@@ -35,6 +36,6 @@ class ProviderRepoImpl(private val service: Service) : ProviderRepo {
             offers = offers,
             homeServices = homeServices,
             specificationID = specificationID
-        ).providers
+        )
     }
 }

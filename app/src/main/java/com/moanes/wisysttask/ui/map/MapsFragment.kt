@@ -6,19 +6,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.snackbar.Snackbar
 import com.moanes.wisysttask.R
 import com.moanes.wisysttask.data.model.providers.DataItem
+import com.moanes.wisysttask.utils.ProgressDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MapsFragment : Fragment() {
     private val viewModel: MapViewModel by viewModel()
+    private var progressDialog: ProgressDialog? = null
 
     private val markerDataHashMap: HashMap<Marker, DataItem> = HashMap<Marker, DataItem>()
     private lateinit var googleMap: GoogleMap
@@ -33,7 +37,7 @@ class MapsFragment : Fragment() {
          * user has installed Google Play services and returned to the app.
          */
         googleMap = it
-
+googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(24.774265, 46.738586), 4f))
         googleMap.setOnMarkerClickListener { marker ->
             val data: DataItem = markerDataHashMap[marker]!!
             ProvidersDetails(data).show(childFragmentManager, "datails")
@@ -47,6 +51,9 @@ class MapsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        activity?.let {
+            progressDialog = ProgressDialog(it)
+        }
         return inflater.inflate(R.layout.fragment_maps, container, false)
     }
 
@@ -55,6 +62,8 @@ class MapsFragment : Fragment() {
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
 
+        handelError()
+        handleProgress()
         providersHandler()
 
 //        viewModel.getAllProviders()
@@ -74,6 +83,19 @@ class MapsFragment : Fragment() {
                 }
 
             }
+        })
+    }
+    private fun handleProgress(){
+        viewModel.showLoading.observe(viewLifecycleOwner, Observer {
+            if(it)
+                progressDialog?.show()
+            else
+                progressDialog?.hide()
+        })
+    }
+    private fun handelError(){
+        viewModel.errorLiveData.observe(viewLifecycleOwner, Observer {
+            view?.let { it1 -> Snackbar.make(it1,it, Snackbar.LENGTH_SHORT).show() }
         })
     }
 }

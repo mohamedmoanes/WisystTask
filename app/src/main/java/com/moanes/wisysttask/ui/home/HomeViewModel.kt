@@ -8,12 +8,17 @@ import com.moanes.wisysttask.data.model.specifications.Specification
 import com.moanes.wisysttask.data.repositories.ProviderRepo
 import com.moanes.wisysttask.data.repositories.SpecificationsRepo
 import com.moanes.wisysttask.ui.base.BaseViewModel
+import com.moanes.wisysttask.utils.errorHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class HomeViewModel(private val providerRepo: ProviderRepo,private val specificationsRepo: SpecificationsRepo) : BaseViewModel() {
+class HomeViewModel(
+    private val providerRepo: ProviderRepo,
+    private val specificationsRepo: SpecificationsRepo
+) : BaseViewModel() {
     val providersLiveData = MutableLiveData<MutableList<DataItem>>()
+    val specificationsLiveData = MutableLiveData<MutableList<KeyPairBoolData>>()
     private var mCurrentPage = 1
     private var mTotalPage = 1
     var key: String? = null
@@ -34,14 +39,20 @@ class HomeViewModel(private val providerRepo: ProviderRepo,private val specifica
                     providerRepo.getProviders(mCurrentPage)
                 }
 
-                result.data?.let { providersLiveData.value?.addAll(it) }
-                providersLiveData.value = providersLiveData.value
-                mCurrentPage = result.currentPage
-                mTotalPage = result.totalPages
-                showLoading.value = false
+                if (result.status) {
+                    result.providers.data?.let { providersLiveData.value?.addAll(it) }
+                    providersLiveData.value = providersLiveData.value
+                    mCurrentPage = result.providers.currentPage
+                    mTotalPage = result.providers.totalPages
+                    showLoading.value = false
+                } else {
+                    showLoading.value = false
+                    errorLiveData.postValue(result.msg)
+                }
 
             } catch (e: Exception) {
                 showLoading.value = false
+                errorLiveData.postValue(errorHandler(e))
 //                providersLiveData.value =
 //                    UseCaseResult.Error(message = errorHandler(e)!!)
             }
@@ -62,7 +73,7 @@ class HomeViewModel(private val providerRepo: ProviderRepo,private val specifica
     fun filter(reset: Boolean = false) {
         if (reset) {
             mCurrentPage = 1
-        reset()
+            reset()
         }
         launch {
             try {
@@ -77,41 +88,80 @@ class HomeViewModel(private val providerRepo: ProviderRepo,private val specifica
                         specificationID
                     )
                 }
-
-                result.data?.let { providersLiveData.value?.addAll(it) }
-                providersLiveData.value = providersLiveData.value
-                mCurrentPage = result.currentPage
-                mTotalPage = result.totalPages
-                showLoading.value = false
+                if (result.status) {
+                    result.providers.data?.let { providersLiveData.value?.addAll(it) }
+                    providersLiveData.value = providersLiveData.value
+                    mCurrentPage = result.providers.currentPage
+                    mTotalPage = result.providers.totalPages
+                    showLoading.value = false
+                } else {
+                    showLoading.value = false
+                    errorLiveData.postValue(result.msg)
+                }
 
             } catch (e: Exception) {
                 showLoading.value = false
+                errorLiveData.postValue(errorHandler(e))
+
 //                providersLiveData.value =
 //                    UseCaseResult.Error(message = errorHandler(e)!!)
             }
         }
     }
 
-    fun getSpecification()= liveData(Dispatchers.IO) {
-        try {
-            showLoading.postValue(true)
+    fun getSpecification() {
+        launch {
+            try {
+                showLoading.value = true
+                val result = withContext(Dispatchers.IO) {
+                    specificationsRepo.getSpecifications()
+                }
 
-            val list =ArrayList<KeyPairBoolData>()
-            for(item :Specification in specificationsRepo.getSpecifications()){
-                val tmp =KeyPairBoolData()
-                tmp.id=item.id.toLong()
-                tmp.name=item.name
-                list.add(tmp)
+                if (result.status) {
+                    val list = ArrayList<KeyPairBoolData>()
+                    for (item: Specification in result.specifications) {
+                        val tmp = KeyPairBoolData()
+                        tmp.id = item.id.toLong()
+                        tmp.name = item.name
+                        list.add(tmp)
+                    }
+
+                    specificationsLiveData.value = list
+                    showLoading.value = false
+                } else {
+                    showLoading.value = false
+                    errorLiveData.postValue(result.msg)
+                }
+
+            } catch (e: Exception) {
+                showLoading.value = false
+                errorLiveData.postValue(errorHandler(e))
+//                providersLiveData.value =
+//                    UseCaseResult.Error(message = errorHandler(e)!!)
             }
-
-            emit(list)
-            showLoading.postValue(false)
-        } catch (exception: Exception) {
-            showLoading.postValue(false)
         }
     }
+//    = liveData(Dispatchers.IO) {
+//        try {
+//            showLoading.postValue(true)
+//
+//            val list = ArrayList<KeyPairBoolData>()
+//            for (item: Specification in specificationsRepo.getSpecifications().specifications) {
+//                val tmp = KeyPairBoolData()
+//                tmp.id = item.id.toLong()
+//                tmp.name = item.name
+//                list.add(tmp)
+//            }
+//
+//            emit(list)
+//            showLoading.postValue(false)
+//        } catch (exception: Exception) {
+//            showLoading.postValue(false)
+//            errorLiveData.postValue(errorHandler(exception))
+//        }
+//    }
 
-    private fun reset(){
+    private fun reset() {
         providersLiveData.value?.clear()
     }
 }

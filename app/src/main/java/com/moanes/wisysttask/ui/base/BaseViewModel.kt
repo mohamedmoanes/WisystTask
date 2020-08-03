@@ -16,6 +16,7 @@ open class BaseViewModel : ViewModel(), CoroutineScope {
     override val coroutineContext: CoroutineContext = job + Dispatchers.Main
 
     val showLoading = MutableLiveData<Boolean>()
+    val errorLiveData = MutableLiveData<String>()
 
     override fun onCleared() {
         super.onCleared()

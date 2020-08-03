@@ -19,4 +19,7 @@
     <string name="insurance">Insurance</string>
     <string name="home_services">Home Services</string>
     <string name="filter_with">Filter with :</string>
+    <string name="error">Error</string>
+    <string name="no_internet">Check Your Internet Connection</string>
+    <string name="server_error">Server Error</string>
 </resources>

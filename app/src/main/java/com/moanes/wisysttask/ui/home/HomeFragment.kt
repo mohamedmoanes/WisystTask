@@ -8,11 +8,11 @@ import android.view.inputmethod.EditorInfo
 import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.androidbuts.multispinnerfilter.KeyPairBoolData
+import com.google.android.material.snackbar.Snackbar
 import com.moanes.wisysttask.R
 import com.moanes.wisysttask.data.model.providers.DataItem
 import com.moanes.wisysttask.utils.ProgressDialog
@@ -40,11 +40,14 @@ class HomeFragment : Fragment() {
         initProvidersAdapter()
         providersHandler()
         handlePagination()
-        getSpecialization()
         handleFilterSpinner()
         handelSearch()
         handleMapBTN()
         handleProgress()
+        handelError()
+        handelSpecialization()
+
+        viewModel.getSpecification()
         viewModel.getProviders()
 
 
@@ -85,8 +88,9 @@ class HomeFragment : Fragment() {
         })
     }
 
-    private fun getSpecialization() {
-        viewModel.getSpecification().observe(viewLifecycleOwner, Observer {
+    private fun handelSpecialization() {
+
+        viewModel.specificationsLiveData.observe(viewLifecycleOwner, Observer {
             it?.let { list ->
                 initSpecialization(list)
             }
@@ -97,7 +101,8 @@ class HomeFragment : Fragment() {
         specialization.setItems(list, -1) {
             for (item: KeyPairBoolData in it.iterator()) {
                 if (item.isSelected) {
-                    viewModel.specificationID = item.id.toInt()
+//                    viewModel.specificationID = item.id.toInt()
+                    viewModel.specificationID = 1000
                     viewModel.filter(true)
                 }
             }
@@ -155,6 +160,11 @@ class HomeFragment : Fragment() {
                 progressDialog?.show()
             else
                 progressDialog?.hide()
+        })
+    }
+    private fun handelError(){
+        viewModel.errorLiveData.observe(viewLifecycleOwner, Observer {
+            view?.let { it1 -> Snackbar.make(it1,it,Snackbar.LENGTH_SHORT).show() }
         })
     }
 }
