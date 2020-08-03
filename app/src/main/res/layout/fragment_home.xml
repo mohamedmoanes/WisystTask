@@ -69,12 +69,29 @@
         app:layout_constraintStart_toEndOf="@id/search_layout"
         app:layout_constraintTop_toTopOf="@id/search_layout" />
 
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/filter_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/filter_with"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_layout" />
+
+    <androidx.appcompat.widget.AppCompatSpinner
+        android:id="@+id/filter"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:entries="@array/filter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/filter_title"
+        app:layout_constraintTop_toBottomOf="@id/search_layout" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/providersRV"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constrainedHeight="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_layout" />
+        app:layout_constraintTop_toBottomOf="@id/filter" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

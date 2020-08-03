@@ -13,4 +13,10 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="search">Search</string>
     <string name="specialization">Specialization</string>
+
+    <string name="all">All</string>
+    <string name="offers">offers</string>
+    <string name="insurance">Insurance</string>
+    <string name="home_services">Home Services</string>
+    <string name="filter_with">Filter with :</string>
 </resources>

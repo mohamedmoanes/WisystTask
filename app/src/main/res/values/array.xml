@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="filter">
+        <item>@string/all</item>
+        <item>@string/insurance</item>
+        <item>@string/offers</item>
+        <item>@string/home_services</item>
+    </string-array>
+</resources>
