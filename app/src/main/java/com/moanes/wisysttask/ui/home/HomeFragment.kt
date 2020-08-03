@@ -101,8 +101,7 @@ class HomeFragment : Fragment() {
         specialization.setItems(list, -1) {
             for (item: KeyPairBoolData in it.iterator()) {
                 if (item.isSelected) {
-//                    viewModel.specificationID = item.id.toInt()
-                    viewModel.specificationID = 1000
+                    viewModel.specificationID = item.id.toInt()
                     viewModel.filter(true)
                 }
             }

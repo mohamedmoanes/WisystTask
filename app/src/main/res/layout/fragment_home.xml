@@ -78,6 +78,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/filter_with"
+        android:textSize="18sp"
+        android:layout_margin="2dp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/search_layout" />
 
@@ -86,6 +89,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:entries="@array/filter"
+        android:layout_margin="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/filter_title"
         app:layout_constraintTop_toBottomOf="@id/search_layout" />
