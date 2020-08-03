@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
@@ -60,10 +59,6 @@ class MapsFragment : Fragment() {
 
 //        viewModel.getAllProviders()
         viewModel.getProviders(viewModel.mCurrentPage)
-
-
-
-
     }
 
 

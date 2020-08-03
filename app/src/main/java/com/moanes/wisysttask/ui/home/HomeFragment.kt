@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -35,11 +37,15 @@ class HomeFragment : Fragment() {
         handlePagination()
         getSpecialization()
         handleFilterSpinner()
+        handelSearch()
+
         viewModel.getProviders()
 
         mapBTN.setOnClickListener {
             findNavController().navigate(R.id.mapsFragment)
         }
+
+
 
     }
 
@@ -122,6 +128,18 @@ class HomeFragment : Fragment() {
                 }
                 viewModel.filter(true)
             }
+        }
+    }
+
+    private fun handelSearch(){
+        searchInput.setOnEditorActionListener { v, actionId, _ ->
+            if (actionId === EditorInfo.IME_ACTION_SEARCH) {
+
+                viewModel.key=v.text.toString()
+                viewModel.filter(true)
+                return@setOnEditorActionListener true
+            }
+            false
         }
     }
 }
