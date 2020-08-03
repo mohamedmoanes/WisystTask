@@ -1,17 +1,19 @@
 package com.developnetwork.wisysttask.ui.home
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.androidbuts.multispinnerfilter.KeyPairBoolData
 import com.developnetwork.wisysttask.R
 import com.developnetwork.wisysttask.data.model.providers.DataItem
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by viewModel()
@@ -29,6 +31,7 @@ class HomeFragment : Fragment() {
         initProvidersAdapter()
         providersHandler()
         handlePagination()
+        getSpecialization()
 
         viewModel.getProviders()
     }
@@ -36,6 +39,9 @@ class HomeFragment : Fragment() {
     private fun providersHandler() {
         viewModel.providersLiveData.observe(viewLifecycleOwner, Observer {
             it?.let { list ->
+                providersList.clear()
+                providersRV.adapter?.notifyDataSetChanged()
+
                 providersList.addAll(list)
                 providersRV.adapter?.notifyDataSetChanged()
             }
@@ -65,4 +71,22 @@ class HomeFragment : Fragment() {
         })
     }
 
+    private fun getSpecialization() {
+        viewModel.getSpecification().observe(viewLifecycleOwner, Observer {
+            it?.let { list ->
+                initSpecialization(list)
+            }
+        })
+    }
+
+    private fun initSpecialization(list: List<KeyPairBoolData>) {
+        specialization.setItems(list, -1) {
+            for (item: KeyPairBoolData in it.iterator()) {
+                if (item.isSelected) {
+                    viewModel.specificationID = item.id.toInt()
+                    viewModel.filter(true)
+                }
+            }
+        }
+    }
 }

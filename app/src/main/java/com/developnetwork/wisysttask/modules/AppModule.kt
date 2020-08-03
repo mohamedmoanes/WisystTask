@@ -4,6 +4,7 @@ package com.developnetwork.wisysttask.modules
 import com.developnetwork.wisysttask.BuildConfig
 import com.developnetwork.wisysttask.data.network.Service
 import okhttp3.*
+import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -24,14 +25,14 @@ val appModules = module {
 
 /* Returns a custom OkHttpClient instance with interceptor. Used for building Retrofit service */
 fun createHttpClient(): OkHttpClient {
-//    val interceptor = HttpLoggingInterceptor()
-//    interceptor.level = HttpLoggingInterceptor.Level.BODY
+    val interceptor = HttpLoggingInterceptor()
+    interceptor.level = HttpLoggingInterceptor.Level.BODY
     return OkHttpClient.Builder()
-        .addInterceptor(headersInterceptor)
+//        .addInterceptor(headersInterceptor)
         .readTimeout(50, TimeUnit.SECONDS)
         .writeTimeout(50, TimeUnit.SECONDS)
         .connectTimeout(50, TimeUnit.SECONDS)
-//        .addInterceptor(interceptor)
+        .addInterceptor(interceptor)
 //        .addNetworkInterceptor(StethoInterceptor())
         .build()
 }
@@ -58,6 +59,7 @@ private val headersInterceptor: Interceptor = object : Interceptor {
             .addFormDataPart("api_email", "api.auth@hs.info")
             .addFormDataPart("api_password", "Ka@r%*MoAJ!rtPXz")
             .addFormDataPart("lang", "en")
+            .addPart(request.body!!)
             .build()
 
         request = request.newBuilder()

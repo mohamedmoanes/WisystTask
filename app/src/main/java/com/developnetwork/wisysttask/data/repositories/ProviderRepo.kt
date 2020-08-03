@@ -2,7 +2,6 @@ package com.developnetwork.wisysttask.data.repositories
 
 import com.developnetwork.wisysttask.data.model.providers.Providers
 import com.developnetwork.wisysttask.data.network.Service
-import retrofit2.http.Field
 
 interface ProviderRepo {
     suspend fun getProviders(page: Int): Providers
@@ -12,7 +11,6 @@ interface ProviderRepo {
         insurance: Int? = 0,
         offers: Int? = 0,
         homeServices: Int? = 0,
-        rate: Int? = 0,
         specificationID: Int? = 0
     ): Providers
 }
@@ -28,7 +26,6 @@ class ProviderRepoImpl(private val service: Service) : ProviderRepo {
         insurance: Int?,
         offers: Int?,
         homeServices: Int?,
-        rate: Int?,
         specificationID: Int?
     ): Providers {
         return service.getProviders(
@@ -37,7 +34,6 @@ class ProviderRepoImpl(private val service: Service) : ProviderRepo {
             insurance = insurance,
             offers = offers,
             homeServices = homeServices,
-            rate = rate,
             specificationID = specificationID
         ).providers
     }

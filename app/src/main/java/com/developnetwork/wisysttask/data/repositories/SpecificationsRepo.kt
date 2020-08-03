@@ -1,7 +1,6 @@
 package com.developnetwork.wisysttask.data.repositories
 
 import com.developnetwork.wisysttask.data.model.specifications.Specification
-import com.developnetwork.wisysttask.data.model.specifications.SpecificationsResponse
 import com.developnetwork.wisysttask.data.network.Service
 
 interface SpecificationsRepo {
