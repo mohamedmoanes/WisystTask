@@ -94,6 +94,8 @@ class HomeViewModel(private val providerRepo: ProviderRepo,private val specifica
 
     fun getSpecification()= liveData(Dispatchers.IO) {
         try {
+            showLoading.postValue(true)
+
             val list =ArrayList<KeyPairBoolData>()
             for(item :Specification in specificationsRepo.getSpecifications()){
                 val tmp =KeyPairBoolData()
@@ -103,9 +105,9 @@ class HomeViewModel(private val providerRepo: ProviderRepo,private val specifica
             }
 
             emit(list)
-//            showLoading.value = false
+            showLoading.postValue(false)
         } catch (exception: Exception) {
-            showLoading.value = false
+            showLoading.postValue(false)
         }
     }
 

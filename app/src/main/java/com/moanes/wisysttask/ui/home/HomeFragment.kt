@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.androidbuts.multispinnerfilter.KeyPairBoolData
 import com.moanes.wisysttask.R
 import com.moanes.wisysttask.data.model.providers.DataItem
+import com.moanes.wisysttask.utils.ProgressDialog
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -22,10 +23,14 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by viewModel()
     private val providersList = ArrayList<DataItem>()
+    private var progressDialog: ProgressDialog? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        activity?.let {
+            progressDialog = ProgressDialog(it)
+        }
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
@@ -38,13 +43,9 @@ class HomeFragment : Fragment() {
         getSpecialization()
         handleFilterSpinner()
         handelSearch()
-
+        handleMapBTN()
+        handleProgress()
         viewModel.getProviders()
-
-        mapBTN.setOnClickListener {
-            findNavController().navigate(R.id.mapsFragment)
-        }
-
 
 
     }
@@ -131,15 +132,29 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun handelSearch(){
+    private fun handelSearch() {
         searchInput.setOnEditorActionListener { v, actionId, _ ->
             if (actionId === EditorInfo.IME_ACTION_SEARCH) {
 
-                viewModel.key=v.text.toString()
+                viewModel.key = v.text.toString()
                 viewModel.filter(true)
                 return@setOnEditorActionListener true
             }
             false
         }
+    }
+
+    private fun handleMapBTN() {
+        mapBTN.setOnClickListener {
+            findNavController().navigate(R.id.mapsFragment)
+        }
+    }
+    private fun handleProgress(){
+        viewModel.showLoading.observe(viewLifecycleOwner, Observer {
+            if(it)
+                progressDialog?.show()
+            else
+                progressDialog?.hide()
+        })
     }
 }
