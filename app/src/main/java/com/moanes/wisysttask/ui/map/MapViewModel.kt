@@ -44,8 +44,7 @@ class MapViewModel(private val providerRepo: ProviderRepo) : BaseViewModel() {
             } catch (e: Exception) {
                 showLoading.value = false
                 errorLiveData.postValue(errorHandler(e))
-//                providersLiveData.value =
-//                    UseCaseResult.Error(message = errorHandler(e)!!)
+
             }
         }
 

@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.9"
                 android:gravity="center"
-                android:text="Home"
+                android:text="@string/home"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -39,60 +39,55 @@
 
     </com.google.android.material.appbar.MaterialToolbar>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/search_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/searchInput"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
+        android:background="@drawable/border"
+        android:drawableEnd="@drawable/ic_search_black_24dp"
+        android:padding="10dp"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:hint="@string/search"
         app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toStartOf="@id/specialization"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:startIconDrawable="@drawable/ic_search_black_24dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/searchInput"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:imeOptions="actionSearch"
-            android:inputType="text"
-            android:lines="1"
-            android:maxLines="1"
-            android:hint="@string/search" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.androidbuts.multispinnerfilter.SingleSpinnerSearch
-        android:id="@+id/specialization"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:hintText="@string/specialization"
-        app:layout_constraintBottom_toBottomOf="@id/search_layout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/search_layout"
-        app:layout_constraintTop_toTopOf="@id/search_layout" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/filter_title"
+        android:id="@+id/specialization"
+        android:layout_margin="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/filter_with"
-        android:textSize="18sp"
-        android:layout_margin="2dp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_layout" />
+        android:background="@drawable/border"
+        android:drawableEnd="@drawable/ic_baseline_arrow_drop_down_24"
+        android:padding="10dp"
+        android:text="@string/specialization"
+        app:layout_constraintBottom_toBottomOf="@id/searchInput"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/searchInput"
+        app:layout_constraintTop_toTopOf="@id/searchInput" />
 
-    <androidx.appcompat.widget.AppCompatSpinner
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/filterBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_baseline_tune_24"
+        app:layout_constraintStart_toStartOf="@id/searchInput"
+        app:layout_constraintTop_toBottomOf="@id/searchInput" />
+
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/filter"
         android:layout_width="0dp"
+        app:layout_constrainedWidth="true"
+        android:layout_margin="5dp"
         android:layout_height="wrap_content"
-        android:entries="@array/filter"
-        android:layout_margin="2dp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/filter_title"
-        app:layout_constraintTop_toBottomOf="@id/search_layout" />
+        app:layout_constraintStart_toEndOf="@id/filterBtn"
+        app:layout_constraintTop_toBottomOf="@id/searchInput" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/providersRV"

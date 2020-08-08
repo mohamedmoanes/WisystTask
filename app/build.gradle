@@ -20,13 +20,13 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
-            buildConfigField "String", "SERVER_URL", '"https://app-api.mcallapp.com/api/"'
+            buildConfigField "String", "SERVER_URL", '"https:hs.wisyst.info/api/"'
         }
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
-            buildConfigField "String", "SERVER_URL", '"https://app-api.mcallapp.com/api/"'}
+            buildConfigField "String", "SERVER_URL", '"https://hs.wisyst.info/api/"'}
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -45,7 +45,7 @@ dependencies {configuration ->
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
-//    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'de.hdodenhof:circleimageview:3.0.0'
 //    implementation 'com.google.android.material:material:1.1.0'
 //    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 //    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.0'

@@ -1,6 +1,5 @@
 package com.moanes.wisysttask.data.repositories
 
-import com.moanes.wisysttask.data.model.providers.Providers
 import com.moanes.wisysttask.data.model.providers.ProvidersResponse
 import com.moanes.wisysttask.data.network.Service
 

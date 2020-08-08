@@ -1,15 +1,23 @@
 package com.moanes.wisysttask.ui.map
 
+import android.app.Activity
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.annotation.DrawableRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
@@ -17,6 +25,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.moanes.wisysttask.R
 import com.moanes.wisysttask.data.model.providers.DataItem
 import com.moanes.wisysttask.utils.ProgressDialog
+import com.moanes.wisysttask.utils.extension.setImageURL
+import de.hdodenhof.circleimageview.CircleImageView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -78,7 +88,9 @@ googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(24.774265, 46.7385
                 for (provider: DataItem in list) {
                     val location =
                         LatLng(provider.latitude.toDouble(), provider.longitude.toDouble())
-                    val marker: Marker = googleMap.addMarker(MarkerOptions().position(location))
+                    val marker: Marker = googleMap.addMarker(MarkerOptions().position(location).icon(
+                        BitmapDescriptorFactory.fromBitmap(
+                        createCustomMarker(requireContext(),provider.logo))))
                     markerDataHashMap[marker] = provider
                 }
 
@@ -97,5 +109,34 @@ googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(24.774265, 46.7385
         viewModel.errorLiveData.observe(viewLifecycleOwner, Observer {
             view?.let { it1 -> Snackbar.make(it1,it, Snackbar.LENGTH_SHORT).show() }
         })
+    }
+
+
+    fun createCustomMarker(
+        context: Context,
+         logo_url:String
+    ): Bitmap? {
+        val marker: View =
+            (context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(
+                R.layout.custom_marker_layout,
+                null
+            )
+        val markerImage =
+            marker.findViewById<CircleImageView>(R.id.logo)
+        markerImage.setImageURL(logo_url)
+        val displayMetrics = DisplayMetrics()
+        (context as Activity).windowManager.defaultDisplay.getMetrics(displayMetrics)
+        marker.layoutParams = ViewGroup.LayoutParams(52, ViewGroup.LayoutParams.WRAP_CONTENT)
+        marker.measure(displayMetrics.widthPixels, displayMetrics.heightPixels)
+        marker.layout(0, 0, displayMetrics.widthPixels, displayMetrics.heightPixels)
+        marker.buildDrawingCache()
+        val bitmap = Bitmap.createBitmap(
+            marker.measuredWidth,
+            marker.measuredHeight,
+            Bitmap.Config.ARGB_8888
+        )
+        val canvas = Canvas(bitmap)
+        marker.draw(canvas)
+        return bitmap
     }
 }

@@ -22,4 +22,7 @@
     <string name="error">Error</string>
     <string name="no_internet">Check Your Internet Connection</string>
     <string name="server_error">Server Error</string>
+    <string name="search_for_specialization">search for specialization</string>
+    <string name="select_a_specializations">select a specializations</string>
+    <string name="home">Home</string>
 </resources>

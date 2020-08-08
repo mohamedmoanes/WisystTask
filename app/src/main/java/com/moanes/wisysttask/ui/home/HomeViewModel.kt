@@ -14,11 +14,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class HomeViewModel(
-    private val providerRepo: ProviderRepo,
-    private val specificationsRepo: SpecificationsRepo
-) : BaseViewModel() {
+    private val providerRepo: ProviderRepo) : BaseViewModel() {
     val providersLiveData = MutableLiveData<MutableList<DataItem>>()
-    val specificationsLiveData = MutableLiveData<MutableList<KeyPairBoolData>>()
     private var mCurrentPage = 1
     private var mTotalPage = 1
     var key: String? = null
@@ -103,64 +100,9 @@ class HomeViewModel(
                 showLoading.value = false
                 errorLiveData.postValue(errorHandler(e))
 
-//                providersLiveData.value =
-//                    UseCaseResult.Error(message = errorHandler(e)!!)
             }
         }
     }
-
-    fun getSpecification() {
-        launch {
-            try {
-                showLoading.value = true
-                val result = withContext(Dispatchers.IO) {
-                    specificationsRepo.getSpecifications()
-                }
-
-                if (result.status) {
-                    val list = ArrayList<KeyPairBoolData>()
-                    for (item: Specification in result.specifications) {
-                        val tmp = KeyPairBoolData()
-                        tmp.id = item.id.toLong()
-                        tmp.name = item.name
-                        list.add(tmp)
-                    }
-
-                    specificationsLiveData.value = list
-                    showLoading.value = false
-                } else {
-                    showLoading.value = false
-                    errorLiveData.postValue(result.msg)
-                }
-
-            } catch (e: Exception) {
-                showLoading.value = false
-                errorLiveData.postValue(errorHandler(e))
-//                providersLiveData.value =
-//                    UseCaseResult.Error(message = errorHandler(e)!!)
-            }
-        }
-    }
-//    = liveData(Dispatchers.IO) {
-//        try {
-//            showLoading.postValue(true)
-//
-//            val list = ArrayList<KeyPairBoolData>()
-//            for (item: Specification in specificationsRepo.getSpecifications().specifications) {
-//                val tmp = KeyPairBoolData()
-//                tmp.id = item.id.toLong()
-//                tmp.name = item.name
-//                list.add(tmp)
-//            }
-//
-//            emit(list)
-//            showLoading.postValue(false)
-//        } catch (exception: Exception) {
-//            showLoading.postValue(false)
-//            errorLiveData.postValue(errorHandler(exception))
-//        }
-//    }
-
     private fun reset() {
         providersLiveData.value?.clear()
     }

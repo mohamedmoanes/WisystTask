@@ -8,7 +8,9 @@ import android.view.inputmethod.EditorInfo
 import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.androidbuts.multispinnerfilter.KeyPairBoolData
@@ -47,7 +49,6 @@ class HomeFragment : Fragment() {
         handelError()
         handelSpecialization()
 
-        viewModel.getSpecification()
         viewModel.getProviders()
 
 
@@ -68,6 +69,10 @@ class HomeFragment : Fragment() {
     private fun initProvidersAdapter() {
         providersRV.layoutManager = LinearLayoutManager(requireContext())
         providersRV.adapter = ProvidersAdapter(providersList)
+        val dividerItemDecoration = DividerItemDecoration(providersRV.context,
+            (providersRV.layoutManager as LinearLayoutManager).orientation
+        );
+        providersRV.addItemDecoration(dividerItemDecoration)
     }
 
     private fun handlePagination() {
@@ -90,50 +95,41 @@ class HomeFragment : Fragment() {
 
     private fun handelSpecialization() {
 
-        viewModel.specificationsLiveData.observe(viewLifecycleOwner, Observer {
-            it?.let { list ->
-                initSpecialization(list)
-            }
-        })
-    }
+        specialization.setOnClickListener {
+            findNavController().navigate(R.id.specializationFragment)
+        }
 
-    private fun initSpecialization(list: List<KeyPairBoolData>) {
-        specialization.setItems(list, -1) {
-            for (item: KeyPairBoolData in it.iterator()) {
-                if (item.isSelected) {
-                    viewModel.specificationID = item.id.toInt()
-                    viewModel.filter(true)
-                }
-            }
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Int>("specificationID")?.observe(
+            viewLifecycleOwner) { result ->
+            // Do something with the result.
+            viewModel.specificationID=result
+            viewModel.filter(true)
         }
     }
 
     private fun handleFilterSpinner() {
-        filter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-                //TODO("Not yet implemented")
-            }
+        filter.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+        filter.adapter = FilterAdapter(resources.getStringArray(R.array.filter).toList(), ::filter)
+    }
 
-            override fun onItemSelected(p0: AdapterView<*>?, v: View?, position: Int, id: Long) {
-                when (position) {
-                    0 -> {
-                        viewModel.homeServices = 0
-                        viewModel.insurance = 0
-                        viewModel.offers = 0
-                    }
-                    1 -> {
-                        viewModel.insurance = 1
-                    }
-                    2 -> {
-                        viewModel.offers = 1
-                    }
-                    3 -> {
-                        viewModel.homeServices = 1
-                    }
-                }
-                viewModel.filter(true)
+    private fun filter(position: Int) {
+        when (position) {
+            0 -> {
+                viewModel.homeServices = 0
+                viewModel.insurance = 0
+                viewModel.offers = 0
+            }
+            1 -> {
+                viewModel.insurance = 1
+            }
+            2 -> {
+                viewModel.offers = 1
+            }
+            3 -> {
+                viewModel.homeServices = 1
             }
         }
+        viewModel.filter(true)
     }
 
     private fun handelSearch() {
@@ -153,17 +149,19 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.mapsFragment)
         }
     }
-    private fun handleProgress(){
+
+    private fun handleProgress() {
         viewModel.showLoading.observe(viewLifecycleOwner, Observer {
-            if(it)
+            if (it)
                 progressDialog?.show()
             else
                 progressDialog?.hide()
         })
     }
-    private fun handelError(){
+
+    private fun handelError() {
         viewModel.errorLiveData.observe(viewLifecycleOwner, Observer {
-            view?.let { it1 -> Snackbar.make(it1,it,Snackbar.LENGTH_SHORT).show() }
+            view?.let { it1 -> Snackbar.make(it1, it, Snackbar.LENGTH_SHORT).show() }
         })
     }
 }

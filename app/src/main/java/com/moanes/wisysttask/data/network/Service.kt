@@ -12,7 +12,7 @@ interface Service {
     suspend fun getSpecifications(
         @Field("api_email") email: String = "api.auth@hs.info",
         @Field("api_password") password: String = "Ka@r%*MoAJ!rtPXz",
-        @Field("lang") lang: String = "en"
+        @Field("lang") lang: String = "ar"
     ): SpecificationsResponse
 
     @POST("user/search")
@@ -20,7 +20,7 @@ interface Service {
     suspend fun getProviders(
         @Field("api_email") email: String = "api.auth@hs.info",
         @Field("api_password") password: String = "Ka@r%*MoAJ!rtPXz",
-        @Field("lang") lang: String = "en",
+        @Field("lang") lang: String = "ar",
         @Field("page") page: Int? = 1,
         @Field("queryStr") queryStr: String? = null,
         @Field("branch_has_insurance") insurance: Int? = 0,

@@ -14,10 +14,19 @@
         <action
             android:id="@+id/action_homeFragment_to_mapsFragment"
             app:destination="@id/mapsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_specializationFragment"
+            app:destination="@id/specializationFragment" />
     </fragment>
     <fragment
         android:id="@+id/mapsFragment"
         android:name="com.moanes.wisysttask.ui.map.MapsFragment"
         android:label="fragment_maps"
         tools:layout="@layout/fragment_maps" />
+    <fragment
+        android:id="@+id/specializationFragment"
+        android:name="com.moanes.wisysttask.ui.specialization.SpecializationFragment"
+        android:label="fragment_specialization"
+        tools:layout="@layout/fragment_specialization" />
+
 </navigation>
